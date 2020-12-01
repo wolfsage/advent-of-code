@@ -249,10 +249,9 @@ llx
 0sc
 lmsd
 [
-  0sa
   lc ;f
+  lc 1+ sa
   sR
-
   lc ld =j
   lc 1 + sc
   llx
