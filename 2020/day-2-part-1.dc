@@ -1,0 +1,74 @@
+# Want:
+# low high want pwitem1 [pwitem2...]
+
+1 2 97 98 97 97 98 100 120 97
+
+# Loop max
+zdsm
+
+# Count of items to look through
+3-sc
+
+# Loop exiter
+[2Q]sq
+
+# 
+[
+  lm d1- sm # decrement loop counter
+  0=q       # quit if we hit 0
+  St        # store items in register t
+  lLx       # loop
+]sL
+
+# do it
+lLx
+
+# Get low
+Ltsl
+
+# Get high
+Ltsh
+
+# Get look for
+Ltsf
+
+# Count items in register that match what we need
+0sg
+
+[
+  lg 1+ sg
+]sI
+
+[
+  lc d1- sc # decrement loop counter
+  0=q     # quit if we hit 0
+
+  Lt      # grab item to compare and duplicate
+  lf =I   # match? increase counter
+
+  lFx
+]sF
+
+lFx
+
+[
+  [bad]psj
+  2Q
+]sn
+
+[
+  [good]psj
+  2Q
+]sy
+
+[
+  # less than our low? bad
+  llp lgp <n
+
+  # higher than our high? bad
+  lhp lgp >n
+
+  lyx
+]sM
+
+lMx
