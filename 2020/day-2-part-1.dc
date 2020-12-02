@@ -1,74 +1,94 @@
 # Want:
 # low high want pwitem1 [pwitem2...]
 
-1 2 97 98 97 97 98 100 120 97
+1 2 97 98 97 97 98 100 120 97 10
+2 6 97 98 97 97 98 97 8
 
-# Loop max
-zdsm
-
-# Count of items to look through
-3-sc
-
-# Loop exiter
 [2Q]sq
 
-# 
+# main counter
+0sT
+
+# incrementer
 [
-  lm d1- sm # decrement loop counter
-  0=q       # quit if we hit 0
-  St        # store items in register t
-  lLx       # loop
-]sL
+  lT 1+ sT
+]sC
 
-# do it
-lLx
-
-# Get low
-Ltsl
-
-# Get high
-Ltsh
-
-# Get look for
-Ltsf
-
-# Count items in register that match what we need
-0sg
-
+# Main loop
 [
-  lg 1+ sg
-]sI
+  # quit if no items left on stack
+  z 0 =q
 
-[
-  lc d1- sc # decrement loop counter
-  0=q     # quit if we hit 0
+  # Items on line
+  dsm
 
-  Lt      # grab item to compare and duplicate
-  lf =I   # match? increase counter
+  # Count of items to look through
+  3-sc
+
+  # Loop exiter
+  # 
+  [
+    lm d1- sm # decrement loop counter
+    0=q       # quit if we hit 0
+    St        # store items in register t
+    lLx       # loop
+  ]sL
+
+  # do it
+  lLx
+
+  # Get low
+  Ltsl
+
+  # Get high
+  Ltsh
+
+  # Get look for
+  Ltsf
+
+  # Count items in register that match what we need
+  0sg
+
+  [
+    lg 1+ sg
+  ]sI
+
+  [
+    lc d1- sc # decrement loop counter
+    0=q     # quit if we hit 0
+
+    Lt      # grab item to compare and duplicate
+    lf =I   # match? increase counter
+
+    lFx
+  ]sF
 
   lFx
-]sF
 
-lFx
+  [
+    2Q
+  ]sn
 
-[
-  [bad]psj
-  2Q
-]sn
+  [
+    lCx # inc!
+    2Q
+  ]sy
 
-[
-  [good]psj
-  2Q
-]sy
+  [
+    # less than our low? bad
+    ll lg <n
 
-[
-  # less than our low? bad
-  llp lgp <n
+    # higher than our high? bad
+    lh lg >n
 
-  # higher than our high? bad
-  lhp lgp >n
+    lyx
+  ]sM
 
-  lyx
-]sM
+  lMx
 
-lMx
+  lZx
+]sZ
+
+lZx
+
+[total ]n lTp
