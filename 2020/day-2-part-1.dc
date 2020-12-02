@@ -1024,8 +1024,8 @@
   # Count of items to look through
   3-sc
 
-  # Loop exiter
-  # 
+  # This loop stores all items on the current "line"
+  # in reverse order in a register
   [
     lm d1- sm # decrement loop counter
     0=q       # quit if we hit 0
@@ -1033,7 +1033,7 @@
     lLx       # loop
   ]sL
 
-  # do it
+  # run the loop
   lLx
 
   # Get low
@@ -1045,13 +1045,15 @@
   # Get look for
   Ltsf
 
-  # Count items in register that match what we need
+  # Now count items in register that match what we need
   0sg
 
+  # count incrementer
   [
     lg 1+ sg
   ]sI
 
+  # loop to count how many items match our needle
   [
     lc d1- sc # decrement loop counter
     0=q     # quit if we hit 0
@@ -1064,15 +1066,18 @@
 
   lFx
 
+  # Not a match? Loop break out
   [
     2Q
   ]sn
 
+  # Match? Increase our count and break out
   [
     lCx # inc!
     2Q
   ]sy
 
+  # Make sure our count is within low to high
   [
     # less than our low? bad
     ll lg <n
@@ -1085,9 +1090,11 @@
 
   lMx
 
+  # Loop onto next line of input
   lZx
 ]sZ
 
+# Run the main program
 lZx
 
 [total ]n lTp
